@@ -1,0 +1,40 @@
+---
+  - name: Open control plane ports on firewalld
+    hosts: kubemaster
+    tasks:
+    - name: Open Kubernetes API Server port
+      firewalld:
+        zone: public
+        port: 6443/tcp
+        permanent: true
+        immediate: true
+        state: enabled
+    - name: Open etcd client api ports
+      firewalld:
+        zone: public
+        port: 2379-2380/tcp
+        permanent: true
+        immediate: true
+        state: enabled
+    - name: Open kubelet api port
+      firewalld:
+        zone: public
+        port: 10250/tcp
+        permanent: true
+        immediate: true
+        state: enabled
+    - name: Open kube-scheduler port
+      firewalld:
+        zone: public
+        port: 10259/tcp
+        permanent: true
+        immediate: true
+        state: enabled
+    - name: Open kube-controller-manager port
+      firewalld:
+        zone: public
+        port: 10257/tcp
+        permanent: true
+        immediate: true
+        state: enabled
+

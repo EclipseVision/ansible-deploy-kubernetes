@@ -1,0 +1,23 @@
+---
+  - name: Upgrade centos8 kernel to 5.4 to be compatible with Cilium Ingress (Kube-proxy replacement)
+    hosts: "{{ hostnames }}"
+    tasks:
+      - name: Show current kernel version
+        shell: uname -r
+        register: current_kernel
+      - debug: var=current_kernel.stdout_lines
+      - name: Import ElRepo public key
+        shell: rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+      - name: Install ELRepo for centos8
+        shell: yum install -y https://www.elrepo.org/elrepo-release-8.el8.elrepo.noarch.rpm
+      - name: Update packages pre-install
+        shell: yum -y update
+      - name: Install latest long-term kernel (5.4)
+        shell: sudo yum --enablerepo=elrepo-kernel install -y kernel-lt
+      - name: Reboot system for kernel changes to take effect
+        reboot:
+
+      - name: Check kernel version after reboot
+        shell: uname -r
+        register: new_kernel
+      - debug: var=new_kernel.stdout_lines 

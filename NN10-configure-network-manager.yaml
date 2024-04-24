@@ -1,0 +1,10 @@
+---
+- name: Configure Network Manager to allow Calico to manage network interfaces
+  hosts: "{{ hostnames }}"
+  tasks:
+  - name: Create calico.conf
+    copy:
+      dest: /etc/NetworkManager/conf.d/calico.conf
+      content: |
+        [keyfile]
+        unmanaged-devices=interface-name:cali*;interface-name:tunl*;interface-name:vxlan.calico;interface-name:vxlan-v6.calico;interface-name:wireguard.cali;interface-name:wg-v6.cali

@@ -1,0 +1,16 @@
+---
+  - name: Disable swap on hosts
+    hosts: "{{ hostnames }}"
+    tasks:
+    - name: Disable swap
+      shell: swapoff -a
+    - name: Check swap space
+      shell: free -h
+      register: output
+    - name: Permanently disable swap in fstab
+      replace:
+        path: /etc/fstab
+        regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$'
+        replace: '#\1\2\3swap\4'
+        backup: yes
+    - debug: var=output.stdout_lines

@@ -1,0 +1,14 @@
+---
+  - name: Check MAC addresses and uuid on all nodes
+    hosts: "{{ hostnames }}"
+    tasks:
+
+    - name: Output MAC address
+      shell: ifconfig -a | grep ether
+      register: mac
+    - debug: var=mac.stdout_lines
+
+    - name: Output uuid
+      shell: cat /sys/class/dmi/id/product_uuid
+      register: uuid
+    - debug: var=uuid.stdout_lines

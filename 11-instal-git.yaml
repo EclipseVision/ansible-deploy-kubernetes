@@ -1,0 +1,8 @@
+---
+  - name: Install git to master server
+    hosts: "{{ hostnames }}"
+    tasks:
+      - name: Install git packages
+        package:
+          name: git
+          state: present

@@ -1,0 +1,19 @@
+---
+  - name: Open control plane ports on firewalld
+    hosts: kubeworker
+    tasks:
+    - name: Open Kubelet API port
+      firewalld:
+        zone: public
+        port: 10250/tcp
+        permanent: true
+        immediate: true
+        state: enabled
+    - name: Open NodePort Services ports
+      firewalld:
+        zone: public
+        port: 30000-32767/tcp
+        permanent: true
+        immediate: true
+        state: enabled
+

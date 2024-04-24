@@ -1,0 +1,9 @@
+---
+  - name: Install net-tools onto machines
+    hosts: "{{ hostnames }}"
+    tasks:
+      - name: ensure net-tools is installed
+        yum:
+          name: net-tools
+          state: present
+        become: true

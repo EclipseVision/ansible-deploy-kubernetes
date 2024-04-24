@@ -1,0 +1,8 @@
+---
+  - name: configure chrony on all kube machines
+    hosts: "{{ hostnames }}"
+    tasks:
+      - name: Install chrony
+        shell: yum install chrony -y
+      - name: Start NTP service
+        shell: systemctl start chronyd

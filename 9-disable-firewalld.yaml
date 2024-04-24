@@ -1,0 +1,12 @@
+---
+  - name: Disable firewalld (Necessary for Calico)
+    hosts: "{{ hostnames }}"
+    tasks:
+    - name: Stop firewalld service
+      shell: systemctl stop firewalld.service
+
+    - name: Disable firewalld service
+      shell: systemctl disable firewalld
+
+    - name: Mask firewalld service
+      shell: systemctl mask --now firewalld

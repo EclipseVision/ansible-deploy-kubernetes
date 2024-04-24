@@ -1,0 +1,65 @@
+---
+  - name: Replace nameserver entry with DNS01 or add if not present
+    hosts: "{{ hostnames }}"
+    tasks:
+    - name: Replace or add DNS01 nameserver to /etc/resolv.conf on hosts
+      lineinfile:
+        path: /etc/resolv.conf
+        regexp: '^nameserver'
+        line: 'nameserver 192.168.0.102'
+
+  - name: Replace lines in ens18 to include static IP, DNS, and gateway
+    hosts: "{{ hostnames }}"
+    tasks:
+    - name: Replace BOOTPROTO to static IP
+      lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-ens18
+        regexp: '^BOOTPROTO='
+        line: 'BOOTPROTO="static"'
+      ignore_errors: true
+    - name: Add in DNS1(DNS01) and DNS2(Google)
+      lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-ens18
+        regexp: '^DNS1='
+        line: 'DNS1="192.168.0.102"'
+      ignore_errors: true
+    - name: Add in DNS1(DNS01) and DNS2(Google)
+      lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-ens18
+        regexp: '^DNS2='
+        line: 'DNS2="8.8.8.8"'
+      ignore_errors: true
+    - name: Add the default gateway
+      lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-ens18
+        regexp: '^GATEWAY='
+        line: 'GATEWAY="192.168.0.1"'
+      ignore_errors: true
+
+  - name: Replace lines in ens192 to include static IP, DNS, and gateway
+    hosts: "{{ hostnames }}"
+    tasks:
+    - name: Replace BOOTPROTO to static IP
+      lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-ens192
+        regexp: '^BOOTPROTO='
+        line: 'BOOTPROTO="static"'
+      ignore_errors: true
+    - name: Add in DNS1(DNS01) and DNS2(Google)
+      lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-ens192
+        regexp: '^DNS1='
+        line: 'DNS1="192.168.0.102"'
+      ignore_errors: true
+    - name: Add in DNS1(DNS01) and DNS2(Google)
+      lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-ens192
+        regexp: '^DNS2='
+        line: 'DNS2="8.8.8.8"'
+      ignore_errors: true
+    - name: Add the default gateway
+      lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-ens192
+        regexp: '^GATEWAY='
+        line: 'GATEWAY="192.168.0.1"'
+      ignore_errors: true
